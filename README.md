@@ -1,17 +1,17 @@
-# LLama AI Long Description Generator README
+  # LLama AI Long Description Generator README
 
-This utility is used to scan a webpage for images and add a long description widget. Clicking the widget at the bottom right of an image opens a dialog with the URL to the image in a text field, and a default prompt "Describe this image" that can be customized to adjust the description output.  The form data is submitted to a local LLama AI server (or external GPT4 server). Local images can also be dragged onto the drop area to have them described. 
+This utility is used to scan a webpage for images and add a long description widget. Clicking the widget at the bottom right of an image opens a dialog with the URL to the image in a text field, and a default prompt "Describe this image" that can be customized to adjust the description output.  The form data is submitted to a local LLama AI server (or external OpenAI GPT4 server). Local images can also be dragged onto the drop area to have them described. 
 
 ## Some Assumptions:
 - A Linux (preferred), or Mac, or Windows OS with Python 3.8+ available
 - A C compiler 
 - [Anaconda python development environment](https://www.anaconda.com/download)  or use [miniconda for Mac](https://conda.io/projects/conda/en/latest/user-guide/install/macos.html)
-- A functioning LLmama server. Installed as a Python package, or from a Github repository See [llama.cpp on Github](https://github.com/ggerganov/llama.cpp)
+- A functioning LLmama server. Installed as a Python package, or from a Github repository. See [llama.cpp on Github](https://github.com/ggerganov/llama.cpp)
 - Large Language Models (LLMs) downloaded from Hugging Face 
 
 ## LLama Documentation
 - [Installing LLama](https://llama-cpp-python.readthedocs.io/en/stable/#installation)
-- [OpenAI API Reference](https://platform.openai.com/docs/api-reference/introduction) for settings that can be customized.
+- [OpenAI API Reference](https://platform.openai.com/docs/api-reference/introduction) for settings that can be customized in the start.py 'response' block.
 
 ### Install LLama
 Assuming an up to date Python environment, run pip to install LLama.cpp. Note the various configuration and environment variables that may need to be set depending on the OS, in the documentation above. 
