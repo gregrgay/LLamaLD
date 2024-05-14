@@ -5,6 +5,7 @@ import requests
 
 
 app = Flask(__name__)
+#Adjust the base_url to point to the OpenAI/LLama server, noting the api-key can be any value for the local LLama server, or set to the appropriate key if using a public OpenAI server (e.g. ChatGPT4)
 client = OpenAI(base_url="http://localhost:8000/v1", api_key="sk-1234")
 
 @app.route('/')
