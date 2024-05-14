@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Describer Examples</title>
+    <style>
+        .image-container {
+        position: relative;
+        display: block;
+        margin-right:-50px;
+        }
+
+        .image-container img {
+        display: inline;
+        border-radius:10px;
+        background-color:rgba(255, 255, 255, 0.5);
+        max-width: 100%;
+        height: 40px;
+        }
+        .image-container img:hover {
+        display: inline;
+        border-radius:10px;
+        background-color:rgba(255, 255, 255, 1.0);
+        max-width: 100%;
+        height: 40px;
+        }
+        .icon-link {
+        position: relative;
+        top:-20px; 
+        right: 50px; 
+        z-index: 999; 
+        }
+    </style
+</head>
+<body>
+    <h1>LLama Image Description Widget Demo</h1>
+    <div id="images">
+        <div class="image-container">
+        <img style="height:400px; width:500px;" src="images/People-presidents.jpg" alt="Image 1">
+        </div>
+        <div class="image-container">
+        <img style="height:400px; width:500px;" src="images/legend_chart.png" alt="Image 2">
+        </div>
+        <div class="image-container">
+        <img style="height:400px; width:500px;" src="images/shapes_text.jpg" alt="Image 3">
+        </div>
+
+        <!-- Add more images here -->
+
+    </div>
+
+    <!-- Popup dialog -->
+    <div id="popup" style="display: none;">
+        <textarea id="description" placeholder="Describe this image"></textarea><br>
+        <div id="drop-area">
+            Drop an image here to convert to Base64
+        </div>
+        <button onclick="submitDescription()">Submit</button>
+    </div>
+
+    <script>
+
+// Function to show the popup dialog
+function showPopup(url) {
+    document.getElementById('popup').style.display = 'block';
+    // Store the URL in a data attribute of the textarea
+    document.getElementById('description').setAttribute('data-url', url);
+}
+
+// Function to submit the description
+function submitDescription() {
+    var description = document.getElementById('description').value;
+    var imageUrl = document.getElementById('description').getAttribute('data-url');
+
+    // Send the data to the Python script via AJAX
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "process_image.py", true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            alert("Description submitted successfully!");
+            document.getElementById('popup').style.display = 'none';
+        }
+    };
+    xhr.send(JSON.stringify({ url: imageUrl, description: description }));
+}
+
+// Add link to each image
+document.addEventListener('DOMContentLoaded', function() {
+    // Function to add links to images
+    function addLinksToImages() {
+        var images = document.querySelectorAll('#images img');
+        images.forEach(function(img) {
+            // Create a link element
+            var link = document.createElement('a');
+            link.href = "?imageUrl="+img.src; // Placeholder href
+            link.innerHTML = '<img src="images/describe.png" alt="Describe this image.">';
+            link.target = "describe";
+            link.className = "icon-link";
+            link.onclick = function(event) {
+                event.preventDefault(); // Prevent default link behavior
+                showPopup(img.src);
+            };
+
+            // Wrap the image with the link
+            var wrapper = document.createElement('div');
+            wrapper.classList.add('image-wrapper');
+            img.parentNode.insertBefore(wrapper, img);
+            wrapper.appendChild(img);
+            wrapper.appendChild(link);
+        });
+    }
+
+    // Call the function to add links to images
+    addLinksToImages();
+});
+function showPopup(url) {
+    // Construct the URL with the image URL as a query parameter
+    var popupUrl = 'http://localhost:5000/?imageUrl=' + encodeURIComponent(url);
+    // Open the constructed URL in a new window or tab
+    window.open(popupUrl, 'DES', 'width=400,height=700');
+}
+
+
+    </script>
+</body>
+</html>
