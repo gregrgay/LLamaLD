@@ -2,6 +2,8 @@
 
 This utility is used to scan a webpage for images and add a long description widget. Clicking the widget at the bottom right of an image opens a dialog with the URL to the image in a text field, and a default prompt "Describe this image" that can be customized to adjust the description output.  The form data is submitted to a local LLama AI server (or external OpenAI GPT4 server). Local images can also be dragged onto the drop area to have them described. 
 
+![Example shows an image of US presidents on the left, and the LLammaLD widget opened to the right.](images/screen1.png)
+
 ## Some Assumptions:
 - A Linux (preferred), or Mac, or Windows OS with Python 3.8+ available
 - A C compiler 
@@ -27,7 +29,7 @@ NOTE: Depending on the python environment, you may need to install other python 
 
 >git clone https://github.com/gregrgay/LLamaLD
 
-Or, clone the LLamaLD repository into you own account and clone it instead, for more control over the files if you wish to customize the tool and track your work.
+Or, fork the LLamaLD repository into you own account and clone it from there, for more control over the files if you wish to customize the tool and track your work.
 >git clone https://github.com/my_git_account/LLamaLD
 
 ### Download Large Language Models (LLMs)
