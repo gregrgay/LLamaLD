@@ -1,27 +1,28 @@
-#Clone llama_cpp.server
+# This file contains some useful commands and test locations
+# when using LLamaLD. It can be safely deleted once you've learned 
+# the commands and locations (also repeated in the README file)
 
+#Clone LLamaLD long description widget from Github
+>git clone https://github.com/gregrgay/LLamaLD
 
-#Run with conda
-#conda create -n llama python=3.10.13 (if not already set)
->conda activate llama (to start lmama server)
+#Activate with conda from within the LLamaLD directory
+>conda activate llama 
 
-#llama version
->python -m llama_cpp.server --model llava/ggml-model-q4_k.gguf --clip_model_path llava/mmproj-model-f16.gguf --chat_format llava-1-5 --n_gpu_layers 1 --n_threads 8
->python -m llama_cpp.server --model llava/ggml-model-q5_k.gguf --clip_model_path llava/mmproj-model-f16.gguf --chat_format llava-1-5 --n_gpu_layers 1 --n_threads 8
->python -m llama_cpp.server --model llava/ggml-model-f16.gguf --clip_model_path llava/mmproj-model-f16.gguf --chat_format llava-1-5 --n_gpu_layers 1 --n_threads 8
-Test server
- http://localhost:8000/doc
+#Run one of the LLama server configurations with incrementally larger language models:
 
-#Start lava widget
+#Smallest LLM
+>python -m llama_cpp.server --model models/ggml-model-q4_k.gguf --clip_model_path models/mmproj-model-f16.gguf --chat_format llava-1-5 --n_gpu_layers 1 --n_threads 8
+#Small LLM
+>python -m llama_cpp.server --model models/ggml-model-q5_k.gguf --clip_model_path models/mmproj-model-f16.gguf --chat_format llava-1-5 --n_gpu_layers 1 --n_threads 8
+#Larger LLM
+>python -m llama_cpp.server --model models/ggml-model-f16.gguf --clip_model_path models/mmproj-model-f16.gguf --chat_format llava-1-5 --n_gpu_layers 1 --n_threads 8
+
+#Test the LLama server
+Go to: http://localhost:8000/docs
+
+#Start LLamaLD widget
 >python start.py
+Go to: http://localhost:5000
 
-LLava version
-
-python -m llava.serve.cli \
-    --model-path liuhaotian/llava-v1.5-7b \
-    --image-file "https://llava-vl.github.io/static/images/view.jpg" \
-    --device mps
-python -m llava.serve.cli \
-    --model-path liuhaotian/llava-v1.5-7b \
-    --image-file "https://llava-vl.github.io/static/images/view.jpg" \
-    --device mps
+#Try the demo
+Go to: http://localhost/widget_test.html
