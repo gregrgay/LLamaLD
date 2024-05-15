@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, send_from_directory
 from openai import OpenAI
 import base64
 import requests
@@ -9,15 +9,17 @@ app = Flask(__name__)
 client = OpenAI(base_url="http://localhost:8000/v1", api_key="sk-1234")
 
 @app.route('/')
-
 def index():
     return render_template('describeimage.html')
+
+@app.route('/images/<path:filename>')
+def images(filename):
+    return send_from_directory('images', filename)
 
 def get_as_base64(url):
     return base64.b64encode(requests.get(url).content).decode('utf-8')
     
 @app.route('/process', methods=['POST'])
-
 def process():    
     if request.json.get('base64Input'):    
         imgurl = request.json.get('base64Input')
@@ -46,6 +48,7 @@ def process():
             
             }
         ],
+        # Tempurature range 0 to 1, setting to 0.1 prompts a more focused and expected answer, while 0.8 encourages a more creative response.
         temperature=0.1,
         stream=True,
     )
