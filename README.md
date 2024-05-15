@@ -7,7 +7,7 @@ This utility is used to scan a webpage for images and add a long description wid
 ## Some Assumptions:
 - A Linux (preferred), or Mac, or Windows OS with Python 3.8+ available
 - A C compiler 
-- [Anaconda python development environment](https://www.anaconda.com/download)  or use [miniconda for Mac](https://conda.io/projects/conda/en/latest/user-guide/install/macos.html)
+- [Anaconda python development environment](https://www.anaconda.com/download)  or use [miniforge for Mac](https://conda.io/projects/conda/en/latest/user-guide/install/macos.html)
 - A functioning LLama server. Installed as a Python package, or from a Github repository. See [llama.cpp on Github](https://github.com/ggerganov/llama.cpp)
 - Large Language Models (LLMs) downloaded from Hugging Face 
 
@@ -72,8 +72,12 @@ The widget then becomes available on port :5000
 
 
 ## Try the Demo
+The demo is a basic HTML file with some images in it, running on a local webserver on the default port :80. To run from a web server, applications like [MAMP](mac)(https://www.mamp.info/en/mamp/mac/), [XAMPP](https://www.apachefriends.org/download.html) (Windows, Mac, Linux) can be used to setup a webserver to run on localhost.
+
+
 Open the demo page at:
 >http://localhost/widget_test.html
+
 
  Then click the icon at the bottom right of each image. In the dialog that opens, press the Submit button to send the default data in the form to the LLama server. Or, customize the prompt to control what gets described. 
  
