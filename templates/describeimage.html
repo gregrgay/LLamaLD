@@ -6,14 +6,19 @@
     <title>OpenAI Image Description Form</title>
     <style>
     #drop-area {
-        width: 300px;
-        height: 200px;
+        width: 240px;
+        min-height: 119px;
+        max-height:100%;
         border: 2px dashed #ccc;
         border-radius: 8px;
         text-align: center;
+        background-image: url("/images/drag-drop-upload.png");
+        background-color: transparent;
+        background-size:cover;
+        background-position: center;
         /* margin: 20px; */
         cursor: pointer;
-        line-height: 150px;
+        /* line-height: 150px; */
     }
     #spinner {
         display: none;  /* Initially hide the spinner */
@@ -34,10 +39,11 @@
         border-color: purple;
     }
     #preview {
-        max-width: 300px;
-        margin: 20px auto;
-        float:left;
-        clear:both;
+        max-width: 230px;
+        max-height:100%;
+        margin: 10px auto;
+        /* float:left;
+        clear:both; */
     }
     #submit{    
         float:left;
@@ -70,8 +76,8 @@
         <label for="imgprompt">Image Prompt:</label><br>
         <textarea id="imgprompt" name="imgprompt" rows="4" cols="30"></textarea><br/>
         <div id="drop-area">       
-            <div id="preview"><label for="fileElem" style=" margin-left:1em;margin-right:auto;">Choose a file from your computer</label></div>
-            <input type="file" id="fileElem" accept="image/*" style="display:none">           
+            <div id="preview"><!--<label for="fileElem">Upload an Image</label>--></div>
+            <input type="file" id="fileElem" accept="image/*" style="display:none" title="Upload an Image">           
         </div>
         <input type="hidden" id="base64Input" name="base64Image">
         <input type="submit" id="submit" value="Submit">
@@ -83,10 +89,13 @@
       
     <div id="output"></div>
     <script>
-    var dropArea = document.getElementById('drop-area');
-    var fileInput = document.getElementById('fileElem');
-    var preview = document.getElementById('preview');
-    var base64Input = document.getElementById('base64Input');
+   document.addEventListener('DOMContentLoaded', () => {
+    const dropArea = document.getElementById('drop-area');
+    const fileInput = document.getElementById('fileElem');
+    const preview = document.getElementById('preview');
+    const base64Input = document.getElementById('base64Input');
+    const imageUrlInput = document.getElementById('imgurl');
+    const imgPromptInput = document.getElementById('imgprompt');
 
     ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
         dropArea.addEventListener(eventName, preventDefaults, false);
@@ -116,8 +125,8 @@
     dropArea.addEventListener('drop', handleDrop, false);
 
     function handleDrop(e) {
-        var dt = e.dataTransfer;
-        var files = dt.files;
+        const dt = e.dataTransfer;
+        const files = dt.files;
         handleFiles(files);
     }
 
@@ -127,63 +136,76 @@
     }
 
     function previewFile(file) {
-    
-        var reader = new FileReader();
+        const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = function () {
-            var img = document.createElement('img');
+            const img = document.createElement('img');
             img.src = reader.result;
             img.style.maxWidth = '100%';
             preview.innerHTML = '';
             preview.appendChild(img);
 
-            var base64String = reader.result.split(',')[1];
+            const base64String = reader.result.split(',')[1];
             base64Input.value = base64String;
-          
         }
     }
 
-    //////////
-document.getElementById("openaiForm").addEventListener("submit", function(event) {
-    event.preventDefault();
-    showSpinner();  // Show spinner when form is submitted
-    var imgurl = document.getElementById("imgurl").value;
-    var imgprompt = document.getElementById("imgprompt").value;
-    var base64Input = document.getElementById("base64Input").value;
-    var imgbase64 = document.getElementById("fileElem").value;
+    // Function to handle image preview from URL
+    function previewImageUrl(url) {
+        const img = document.createElement('img');
+        img.src = url;
+        img.style.maxWidth = '100%';
+        preview.innerHTML = '';
+        preview.appendChild(img);
+    }
 
-    fetch('/process', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ imgurl: imgurl, imgprompt: imgprompt, base64Input: base64Input}),
-    })
-    .then(response => response.json())
-    .then(data => {
-        hideSpinnerAndDisplayOutput(output)
-        document.getElementById("output").innerHTML = "<h3>Image Description:</h3><p role='alert'>" + data.output + "</p>";
-    })
-    .catch((error) => {
-        console.error('Error:', error);
+    document.getElementById("openaiForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+        showSpinner();  // Show spinner when form is submitted
+        const imgurl = imageUrlInput.value.trim();
+        const imgprompt = imgPromptInput.value;
+        const base64InputValue = base64Input.value;
+
+        fetch('/process', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ imgurl: imgurl, imgprompt: imgprompt, base64Input: base64InputValue }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            hideSpinnerAndDisplayOutput(data.output);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    });
+
+    // Function to display spinner
+    function showSpinner() {
+        const spinnerDiv = document.getElementById('spinner');
+        spinnerDiv.style.display = 'block';
+    }
+
+    // Function to hide spinner and display output
+    function hideSpinnerAndDisplayOutput(output) {
+        const spinnerDiv = document.getElementById('spinner');
+        spinnerDiv.style.display = 'none';
+
+        const outputDiv = document.getElementById('output');
+        outputDiv.innerHTML = "<h3>Image Description:</h3><p role='alert'>" + output + "</p>";
+    }
+
+    // Initial image preview based on the current URL value
+    previewImageUrl(imageUrlInput.value.trim());
+
+       // Listen for changes in the file input
+    fileInput.addEventListener('change', function() {
+        handleFiles(this.files);
     });
 });
-
-// Function to display spinner
-function showSpinner() {
-    var spinnerDiv = document.getElementById('spinner');
-    spinnerDiv.style.display = 'block';
-  }
-
-// Function to hide spinner and display output
-  function hideSpinnerAndDisplayOutput(output) {
-    var spinnerDiv = document.getElementById('spinner');
-    spinnerDiv.style.display = 'none';
-
-    var outputDiv = document.getElementById('output');
-    outputDiv.innerHTML = output;
-  }
-  
+ 
 // Function to parse query parameters from URL
   function getQueryParams() {
         var queryParams = {};
