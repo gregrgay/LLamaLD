@@ -8,7 +8,7 @@ This utility is used to scan a webpage for images and add a long description wid
 - A Linux (preferred), or Mac, or Windows OS with Python 3.8+ available
 - A C compiler 
 - [Anaconda python development environment](https://www.anaconda.com/download)  or use [miniconda for Mac](https://conda.io/projects/conda/en/latest/user-guide/install/macos.html)
-- A functioning LLmama server. Installed as a Python package, or from a Github repository. See [llama.cpp on Github](https://github.com/ggerganov/llama.cpp)
+- A functioning LLama server. Installed as a Python package, or from a Github repository. See [llama.cpp on Github](https://github.com/ggerganov/llama.cpp)
 - Large Language Models (LLMs) downloaded from Hugging Face 
 
 ## LLama Documentation
@@ -29,7 +29,8 @@ NOTE: Depending on the python environment, you may need to install other python 
 
 >git clone https://github.com/gregrgay/LLamaLD
 
-Or, fork the LLamaLD repository into you own account and clone it from there, for more control over the files if you wish to customize the tool and track your work.
+Or, fork the LLamaLD repository into you own account and clone it from there.
+
 >git clone https://github.com/my_git_account/LLamaLD
 
 ### Download Large Language Models (LLMs)
@@ -74,7 +75,9 @@ The widget then becomes available on port :5000
 Open the demo page at:
 >http://localhost/widget_test.html
 
- Then click the icon at the bottom right of each image. In the dialog that opens, press the Submit button to send the default data in the form to the LLama server. Or, customize the prompt to control what gets described. Or, drag a local image on to the drop area, then press submit to describe that image instead of the default image from which the widget was opened. 
+ Then click the icon at the bottom right of each image. In the dialog that opens, press the Submit button to send the default data in the form to the LLama server. Or, customize the prompt to control what gets described. 
+ 
+ Or, drag a local image on to the drop area, then press submit to describe that image instead of the default image from which the widget was opened. 
 
 
 
